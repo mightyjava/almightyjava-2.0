@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements HelperService<Category> {
 	
 	@Override
 	public Page<Category> findAll(Pageable pageable) {
-		return categoryRepository.findAll(new PageRequest(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
+		return categoryRepository.findAll(PageRequest.of(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
 	}
 
 	@Override

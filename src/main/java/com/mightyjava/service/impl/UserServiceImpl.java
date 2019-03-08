@@ -41,12 +41,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public Page<User> findAll(Pageable pageable) {
-		return userRepository.findAll(new PageRequest(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
+		return userRepository.findAll(PageRequest.of(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
 	}
 	
 	@Override
 	public Page<User> findAll(Long id, Pageable pageable) {
-		return userRepository.findAll(id, new PageRequest(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
+		return userRepository.findAll(id, PageRequest.of(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class VideoServiceImpl implements HelperService<Video> {
 	
 	@Override
 	public Page<Video> findAll(Pageable pageable) {
-		return videoRepository.findAll(new PageRequest(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
+		return videoRepository.findAll(PageRequest.of(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
 	}
 
 	@Override

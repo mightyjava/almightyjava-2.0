@@ -34,12 +34,12 @@ public class AddressServiceImpl implements HelperService<Address> {
 	
 	@Override
 	public Page<Address> findAll(Pageable pageable) {
-		return addressRepository.findAll(new PageRequest(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
+		return addressRepository.findAll(PageRequest.of(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
 	}
 	
 	@Override
 	public Page<Address> findAll(Long userId, Pageable pageable) {
-		return addressRepository.findAll(userRepository.findById(userId).get(), new PageRequest(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
+		return addressRepository.findAll(userRepository.findById(userId).get(), PageRequest.of(pageable.getPageNumber() - 1, ConstantUtils.PAGINATION_SIZE));
 	}
 
 	@Override
