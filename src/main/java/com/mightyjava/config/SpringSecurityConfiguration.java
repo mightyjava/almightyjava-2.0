@@ -1,6 +1,7 @@
 package com.mightyjava.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -51,28 +52,28 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.rememberMe().tokenValiditySeconds(180); 
 	}
 	
-	@Autowired
-	private Environment environment;
+	@Value("${server.servlet.context-path}")
+	private String contextPath;
 	
 	@Autowired
 	private MessageConfig messageConfig;
 	
 	private AuthenticationSuccessHandler loginSuccessHandler() {
 		return (request, response, authentication) -> response
-				.sendRedirect(environment.getProperty("server.servlet.context-path"));
+				.sendRedirect(contextPath);
 	}
 	
 	private AuthenticationFailureHandler loginFailureHandler() {
 		return (request, response, exception) -> {
 			request.getSession().setAttribute("error", messageConfig.getMessage("user.invalid.credentials"));
-			response.sendRedirect(environment.getProperty("server.servlet.context-path") + "/user/login");
+			response.sendRedirect(contextPath + "/user/login");
 		};
 	}
 	
 	private LogoutSuccessHandler logoutSuccessHandler() {
 		return (request, response, authentication) -> {
 			request.getSession().setAttribute("message", messageConfig.getMessage("user.logout.success"));
-			response.sendRedirect(environment.getProperty("server.servlet.context-path") + "/user/login");
+			response.sendRedirect(contextPath + "/user/login");
 		};
 	}
 }

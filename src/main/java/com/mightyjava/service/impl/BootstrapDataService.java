@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,15 +43,25 @@ public class BootstrapDataService implements ApplicationListener<ContextRefreshe
 		}
 	}
 	
+	@Value("${spring.profiles.active}")
+	private String profile;
+	
 	private void insertUser() {
 		if(userRepository.userList().size() == 0) {
 			User user = new User();
-			user.setEmail("mightyjava@gmail.com");
-			user.setFullName("Mighty Java");
+			if(profile.equalsIgnoreCase("dev")) {
+				user.setEmail("mightyjava@gmail.com");
+				user.setFullName("Mighty Java");
+				user.setUserId("MJ001");
+				user.setUserName("mightyjava");
+			} else {
+				user.setEmail("almightyjava@gmail.com");
+				user.setFullName("Almighty Java");
+				user.setUserId("AMJ001");
+				user.setUserName("almightyjava");
+			}
 			user.setMobile("9876543210");
 			user.setPassword(new BCryptPasswordEncoder().encode("password"));
-			user.setUserId("MJ001");
-			user.setUserName("mightyjava");
 			user.setRole(roleRepository.findById(1L).get());
 			
 			userRepository.save(user);
